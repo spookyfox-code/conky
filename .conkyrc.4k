@@ -1,0 +1,114 @@
+-- vim: ts=4 sw=4 noet ai cindent syntax=lua
+--[[
+Conky, a system monitor, based on torsmo
+
+Any original torsmo code is licensed under the BSD license
+
+All code written since the fork of torsmo is licensed under the GPL
+
+Please see COPYING for details
+
+Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+Copyright (c) 2005-2012 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+All rights reserved.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+]]
+
+conky.config = {
+    alignment = 'top_left',
+    background = true,
+    border_width = 1, 
+    cpu_avg_samples = 2,
+	default_color = '#8f69ff',
+    default_outline_color = '#8f69ff',
+    default_shade_color = '#8f69ff',
+    draw_borders = false,
+    draw_graph_borders = true,
+    draw_outline = false,
+    draw_shades = false,
+    use_xft = true,
+    font = 'DejaVu Sans Mono:size=12',
+    double_buffer = true,
+    no_buffers = true,
+    gap_x = 800,
+    gap_y = 90,
+    minimum_height =2072,
+    net_avg_samples = 2,
+    out_to_console = false,
+    out_to_stderr = false,
+    extra_newline = false,
+    own_window = true,
+    own_window_transparent = false,
+    own_window_class = 'Conky',
+    own_window_type = 'dock',
+    own_window_hints = 'undecorated,sticky,skip_taskbar,skip_pager',
+    own_window_argb_visual = true,
+    own_window_argb_value = 150,
+    stippled_borders = 0,
+    update_interval = 1.0,
+    uppercase = false,
+    use_spacer = 'left',
+    show_graph_scale = false,
+    show_graph_range = false
+}
+
+conky.text = [[
+${color #8f69ff}$nodename - $sysname $kernel
+${color #43347b}$hr
+${color #533d95}Uptime  ${color #8f69ff}$uptime
+${color #43347b}$hr
+${color #533d95}CPU
+ ${color #533d95}Core 1 (${freq_g 1}GHz)  ${color #8f69ff}${cpu cpu1}%${goto 440} ${cpubar cpu1 8,380} ${execi 10 sensors | grep "Core 0" | cut -d "+" -f2 | cut -c1-6}C
+ ${color #533d95}Core 2 (${freq_g 2}GHz)  ${color #8f69ff}${cpu cpu2}%${goto 440} ${cpubar cpu2 8,380} ${execi 10 sensors | grep "Core 1" | cut -d "+" -f2 | cut -c1-6}C
+ ${color #533d95}Core 3 (${freq_g 3}GHz)  ${color #8f69ff}${cpu cpu3}%${goto 440} ${cpubar cpu3 8,380} ${execi 10 sensors | grep "Core 2" | cut -d "+" -f2 | cut -c1-6}C
+ ${color #533d95}Core 4 (${freq_g 4}GHz)  ${color #8f69ff}${cpu cpu4}%${goto 440} ${cpubar cpu4 8,380} ${execi 10 sensors | grep "Core 3" | cut -d "+" -f2 | cut -c1-6}C
+${color #43347b}$hr
+${color #533d95}MEMORY
+  ${color #533d95}RAM  ${color #8f69ff}  $mem of $memmax - $memperc% ${membar 8}
+  ${color #533d95}Swap  ${color #8f69ff} $swap of $swapmax - $swapperc% ${swapbar 8}
+${color #43347b}$hr
+${color #533d95}PROCESSES           ${color #8f69ff}$running_processes of $processes are running
+
+${color #533d95}        NAME             PID     CPU%   MEM%
+    ${color #533d95}$hr
+  ${color #533d95}CPU  ${color #8f69ff} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+       ${color #8f69ff} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+       ${color #8f69ff} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+       ${color #8f69ff} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
+    ${color #533d95}$hr
+  ${color #533d95}MEM  ${color #8f69ff} ${top_mem name 1} ${top_mem pid 1} ${top_mem cpu 1} ${top_mem mem 1}
+       ${color #8f69ff} ${top_mem name 2} ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
+       ${color #8f69ff} ${top_mem name 3} ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
+       ${color #8f69ff} ${top_mem name 4} ${top_mem pid 4} ${top_mem cpu 4} ${top_mem mem 4}
+${color #43347b}$hr
+${color #533d95}FILE SYSTEMS
+${color #8f69ff} /     ${fs_used /} of ${fs_size /} - ${fs_used_perc /}% ${fs_bar 8 /}
+${color #8f69ff} /home ${fs_used /home} of ${fs_size /home} - ${fs_used_perc /home}% ${fs_bar 8 /home}
+${color #533d95}    IO ${color #8f69ff}${diskiograph /dev/sda 50}
+${color #43347b}$hr
+${color #533d95}BACKUP
+  ${color #533d95}Status                ${color #8f69ff}${execi 5 /home/spooky/scripts/conky/backup_status.sh}
+  ${color #533d95}Last Backup Time      ${color #8f69ff}${execi 5 /home/spooky/scripts/conky/backup_last.pl}
+  ${color #533d95}Last Backup Location  ${color #8f69ff}${execi 5 /home/spooky/scripts/conky/backup_last_location.sh}
+${color #43347b}$hr
+${color #533d95}NETWORKING           Upload              Download
+${color #8f69ff} Wifi       ${upspeed wlp4s0} ${upspeedgraph wlp4so 24,200}  ${downspeed wlp4s0} ${downspeedgraph wlp4s0 24,200}
+${color #8f69ff} Ethernet   ${upspeed enp0s31f6} ${upspeedgraph enp0s31f6 24,200}  ${downspeed enp0s31f6} ${downspeedgraph enp0s31f6 24,200}
+${color #8f69ff} KVM        ${upspeed virbr0} ${upspeedgraph virbr0 24,200}  ${downspeed virbr0} ${downspeedgraph virbr0 24,200}
+${color #8f69ff} Docker     ${upspeed docker0} ${upspeedgraph docker0 24,200}  ${downspeed docker0} ${downspeedgraph docker0 24,200}
+${color #43347b}$hr
+${color #533d95}PORTAGE
+ ${color #533d95}Status                 ${color #8f69ff}${execi 30 /home/spooky/scripts/conky/emerge-status.sh}
+ ${color #533d95}Last Sync Time         ${color #8f69ff}${execi 30 /home/spooky/scripts/conky/lastsync.pl}
+]]
